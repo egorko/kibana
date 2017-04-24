@@ -1,5 +1,5 @@
 import expect from 'expect.js';
-import KibanaMap from 'ui/vis_maps/kibana_map';
+import { KibanaMap } from 'ui/vis_maps/kibana_map';
 
 describe('kibana_map tests', function () {
 
@@ -29,7 +29,9 @@ describe('kibana_map tests', function () {
       setupDOM();
       kibanaMap = new KibanaMap(domNode, {
         minZoom: 1,
-        maxZoom: 10
+        maxZoom: 10,
+        center: [0,0],
+        zoom: 0
       });
     });
 
@@ -74,7 +76,9 @@ describe('kibana_map tests', function () {
       setupDOM();
       kibanaMap = new KibanaMap(domNode, {
         minZoom: 1,
-        maxZoom: 10
+        maxZoom: 10,
+        center: [0,0],
+        zoom: 0
       });
     });
 

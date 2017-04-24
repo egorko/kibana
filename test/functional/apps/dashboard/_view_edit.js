@@ -2,12 +2,17 @@ import expect from 'expect.js';
 
 export default function ({ getService, getPageObjects }) {
   const testSubjects = getService('testSubjects');
+  const kibanaServer = getService('kibanaServer');
+  const retry = getService('retry');
+  const remote = getService('remote');
   const PageObjects = getPageObjects(['dashboard', 'header', 'common', 'visualize']);
   const dashboardName = 'Dashboard View Edit Test';
 
   describe('dashboard view edit mode', function viewEditModeTests() {
     before(async function () {
       await PageObjects.dashboard.initTests();
+      await kibanaServer.uiSettings.disableToastAutohide();
+      await remote.refresh();
     });
 
     after(async function () {
@@ -169,9 +174,11 @@ export default function ({ getService, getPageObjects }) {
           // was loaded initially
           await PageObjects.dashboard.loadSavedDashboard(dashboardName);
           await PageObjects.dashboard.clickEdit();
-
-          const originalFilters = await PageObjects.dashboard.getFilters();
-
+          const originalFilters = await retry.try(async () => {
+            const filters = await PageObjects.dashboard.getFilters();
+            if (!filters.length) throw new Error('expected filters');
+            return filters;
+          });
           // Click to cause hover menu to show up, but it will also actually click the filter, which will turn
           // it off, so we need to click twice to turn it back on.
           await originalFilters[0].click();

@@ -1,9 +1,10 @@
-import modules from 'ui/modules';
-import Notifier from 'ui/notify/notifier';
+import { uiModules } from 'ui/modules';
+import { Notifier } from 'ui/notify/notifier';
 import 'ui/notify/directives';
 import { metadata } from 'ui/metadata';
-const module = modules.get('kibana/notify');
-const rootNotifier = new Notifier();
+
+const module = uiModules.get('kibana/notify');
+export const notify = new Notifier();
 
 module.factory('createNotifier', function () {
   return function (opts) {
@@ -41,22 +42,21 @@ function applyConfig(config) {
     warningLifetime: config.get('notifications:lifetime:warning'),
     infoLifetime: config.get('notifications:lifetime:info')
   });
-  rootNotifier.banner(config.get('notifications:banner'));
+  notify.banner(config.get('notifications:banner'));
 }
 
 window.onerror = function (err, url, line) {
-  rootNotifier.fatal(new Error(err + ' (' + url + ':' + line + ')'));
+  notify.fatal(new Error(err + ' (' + url + ':' + line + ')'));
   return true;
 };
 
 if (window.addEventListener) {
-  const notify = new Notifier({
+  const notifier = new Notifier({
     location: 'Promise'
   });
 
   window.addEventListener('unhandledrejection', function (e) {
-    notify.log(`Detected an unhandled Promise rejection.\n${e.reason}`);
+    notifier.log(`Detected an unhandled Promise rejection.\n${e.reason}`);
   });
 }
 
-export default rootNotifier;

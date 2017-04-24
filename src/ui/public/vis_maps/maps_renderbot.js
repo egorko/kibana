@@ -1,10 +1,10 @@
 import $ from 'jquery';
 import _ from 'lodash';
-import VisRenderbotProvider from 'ui/vis/renderbot';
-import MapsVisTypeBuildChartDataProvider from 'ui/vislib_vis_type/build_chart_data';
-import FilterBarPushFilterProvider from 'ui/filter_bar/push_filter';
-import KibanaMap from './kibana_map';
-import GeohashLayer from './geohash_layer';
+import { VisRenderbotProvider } from 'ui/vis/renderbot';
+import { VislibVisTypeBuildChartDataProvider } from 'ui/vislib_vis_type/build_chart_data';
+import { FilterBarPushFilterProvider } from 'ui/filter_bar/push_filter';
+import { KibanaMap } from './kibana_map';
+import { GeohashLayer } from './geohash_layer';
 import './lib/tilemap_settings';
 import './styles/_tilemap.less';
 import { ResizeCheckerProvider } from 'ui/resize_checker';
@@ -14,7 +14,7 @@ module.exports = function MapsRenderbotFactory(Private, $injector, tilemapSettin
 
   const ResizeChecker = Private(ResizeCheckerProvider);
   const Renderbot = Private(VisRenderbotProvider);
-  const buildChartData = Private(MapsVisTypeBuildChartDataProvider);
+  const buildChartData = Private(VislibVisTypeBuildChartDataProvider);
   const notify = new Notifier({ location: 'Tilemap' });
 
   class MapsRenderbot extends Renderbot {
@@ -52,14 +52,18 @@ module.exports = function MapsRenderbotFactory(Private, $injector, tilemapSettin
       }
 
       const containerElement = $($el)[0];
-      const minMaxZoom = tilemapSettings.getMinMaxZoom(false);
-      this._kibanaMap = new KibanaMap(containerElement, minMaxZoom);
+      const options = _.clone(tilemapSettings.getMinMaxZoom(false));
+      const uiState = this.vis.getUiState();
+      const zoomFromUiState = parseInt(uiState.get('mapZoom'));
+      const centerFromUIState = uiState.get('mapCenter');
+      options.zoom = !isNaN(zoomFromUiState) ? zoomFromUiState : this.vis.type.params.defaults.mapZoom;
+      options.center = centerFromUIState ? centerFromUIState : this.vis.type.params.defaults.mapCenter;
+
+      this._kibanaMap = new KibanaMap(containerElement, options);
       this._kibanaMap.addDrawControl();
       this._kibanaMap.addFitControl();
       this._kibanaMap.addLegendControl();
-
       this._kibanaMap.persistUiStateForVisualization(this.vis);
-      this._kibanaMap.useUiStateFromVisualization(this.vis);
 
       let previousPrecision = this._kibanaMap.getAutoPrecision();
       let precisionChange = false;

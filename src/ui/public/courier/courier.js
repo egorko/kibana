@@ -3,8 +3,8 @@ import _ from 'lodash';
 import 'ui/es';
 import 'ui/promises';
 import 'ui/index_patterns';
-import uiModules from 'ui/modules';
-import Notifier from 'ui/notify/notifier';
+import { uiModules } from 'ui/modules';
+import { Notifier } from 'ui/notify/notifier';
 
 import { DocSourceProvider } from './data_source/doc_source';
 import { SearchSourceProvider } from './data_source/search_source';
