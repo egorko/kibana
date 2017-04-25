@@ -2,6 +2,7 @@ import _ from 'lodash';
 import GenerateMappingChainProvider from './generate_mapping_chain';
 import MapMatchAllProvider from './map_match_all';
 import MapTermsProvider from './map_terms';
+import MapBoolTermsProvider from './map_bool_terms';
 import MapRangeProvider from './map_range';
 import MapExistsProvider from './map_exists';
 import MapMissingProvider from './map_missing';
@@ -32,6 +33,7 @@ export default function mapFilterProvider(Promise, Private) {
   let mappers = [
     Private(MapMatchAllProvider),
     Private(MapTermsProvider),
+    Private(MapBoolTermsProvider),
     Private(MapRangeProvider),
     Private(MapExistsProvider),
     Private(MapMissingProvider),

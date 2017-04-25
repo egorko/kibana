@@ -1,0 +1,19 @@
+<form 
+  role="form"
+  ng-submit="opts.saveSettings()"
+>
+  <div class="kuiLocalDropdownTitle">{{opts.settings.title}}</div>
+  <input 
+    class="kuiLocalDropdownInput"
+    id="SaveSettings" 
+    type="text"
+    ng-model="opts.settings.title" 
+    placeholder="Name for this settings..."
+    input-focus="select"
+  >
+  
+  <button ng-disabled="!opts.settings.title" type="submit" class="btn btn-primary">
+    Save
+  </button>
+
+</form>

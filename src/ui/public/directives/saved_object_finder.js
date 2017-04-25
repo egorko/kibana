@@ -8,7 +8,12 @@ let module = uiModules.get('kibana');
 
 module.directive('savedObjectFinder', function ($location, $injector, kbnUrl, Private, config) {
 
-  let services = Private(SavedObjectsSavedObjectRegistryProvider).byLoaderPropertiesName;
+  console.log('start');
+  console.log(SavedObjectsSavedObjectRegistryProvider);
+  let register = Private(SavedObjectsSavedObjectRegistryProvider)
+  console.log('register');
+  let services = register.byLoaderPropertiesName;
+  console.log('complete');
 
   return {
     restrict: 'E',

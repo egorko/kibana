@@ -7,6 +7,56 @@ export default function (Private) {
   let queryFilter = Private(FilterBarQueryFilterProvider);
   let filterManager = {};
 
+  filterManager.getFilters = function() {
+    return queryFilter.getFilters();
+  }
+
+  filterManager.removeFilter = function(filter) {
+    return queryFilter.removeFilter(filter);
+  }
+
+  filterManager.addArray = function (field, values, operation, boolOps, index) {
+    values = _.isArray(values) ? values : [values];
+    let fieldName = _.isObject(field) ? field.name : field;
+    let filters = _.flatten([queryFilter.getAppFilters()]);
+    let newFilters = [];
+
+    let negate = (operation === '-');
+
+    let filter = 
+      { 
+        meta: 
+        {
+          negate: negate, 
+          index: index,
+          filter_array: {
+            field: field,
+            bool_op: boolOps
+          }
+        }, 
+        query: 
+        { 
+          bool: {} 
+        } 
+      };
+    var actionArray = [];
+    _.each(values, function (value) {
+      var action = { term: { } };
+      action.term[field] = value;
+      actionArray.push(action);
+    });
+    switch (boolOps) {
+      case "or":
+        filter.query.bool.should = actionArray;
+        break;
+      case "and":
+        filter.query.bool.must = actionArray;
+        break;
+    }
+    
+    return queryFilter.addFilters(filter);
+  };
+
   filterManager.add = function (field, values, operation, index) {
     values = _.isArray(values) ? values : [values];
     let fieldName = _.isObject(field) ? field.name : field;

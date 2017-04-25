@@ -1,0 +1,12 @@
+<div class="button-group" style="text-align:right">
+  <span tooltip="Export pcap file(s) of selected document(s)" tooltip-placement="bottom" tooltip-popup-delay="400" tooltip-append-to-body="1" text="Export pcap" placement="bottom" append-to-body="1" class="ng-scope">
+    <button ng-click="exportPcap()" aria-label="Export pcap" class="ng-scope">
+      <i aria-hidden="true" class="fa fa-floppy-o"></i>
+    </button>
+  </span>
+  <span tooltip="Sessionize selected document(s)" tooltip-placement="bottom" tooltip-popup-delay="400" tooltip-append-to-body="1" text="Sessionize document" placement="bottom" append-to-body="1" class="ng-scope">
+    <button ng-click="sessionize()" aria-label="Sessionize document" class="ng-scope" ng-disabled="inProgress">
+      <i aria-hidden="true" class="fa fa-puzzle-piece" ng-class="{ 'fa-spin' : inProgress}"></i>
+    </button>
+  </span>
+<div>

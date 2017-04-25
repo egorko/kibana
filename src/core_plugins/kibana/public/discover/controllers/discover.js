@@ -498,6 +498,18 @@ function discoverController($scope, config, courier, $route, $window, Notifier,
     $scope.indexPattern.popularizeField(field, 1);
     filterManager.add(field, values, operation, $state.index);
   };
+  
+  $scope.filterQueryArray = function (field, valueArray, operation, boolOp) {
+    if(valueArray.length == 0) { return };
+    $scope.indexPattern.popularizeField(field, 1);
+    filterManager.addArray(
+      field, 
+      valueArray, 
+      operation, 
+      boolOp, 
+	    $state.index
+    );
+  };
 
   $scope.toTop = function () {
     $window.scrollTo(0, 0);

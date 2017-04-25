@@ -10,7 +10,6 @@ module.exports.getVersion = function () {
 module.exports.send = function (method, path, data, server, disable_auth_alert) {
   var wrappedDfd = $.Deferred();
 
-  console.log("Calling " + path);
   if (data && method == "GET") {
     method = "POST";
   }

@@ -1,0 +1,13 @@
+<li>
+  <i class="fa fa-caret-right" aria-hidden="true" ng-click="showCases=true" ng-show="!showCases"></i>
+  <i class="fa fa-caret-down" aria-hidden="true" ng-click="showCases=false" ng-show="showCases"></i> 
+  <span class="operator">switch: </switch><input class="field-name" type="text" ng-model="condition"/>
+</li>
+<ul ng-show="showCases">
+  <ul ng-repeat="key in keySet" class="rule-shift">
+     <i class="fa fa-caret-right" aria-hidden="true" ng-click="showValues=true" ng-show="!showValues"></i>
+     <i class="fa fa-caret-down" aria-hidden="true" ng-click="showValues=false" ng-show="showValues"></i> 
+    <span class="operator">case </span><input class="const-value" type="text" ng-model="key"/>
+    <ul class="rule-shift" rule-value-array rule-master="ruleMaster" rule-value="ruleValue.cases[key]" ng-show="showValues"></ul>
+  </ul>
+<ul>

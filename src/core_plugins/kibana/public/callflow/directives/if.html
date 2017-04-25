@@ -1,0 +1,30 @@
+<span 
+  class="operator" 
+  style="display: inline-block; vertical-align: top" 
+  ng-class="{selected: isSelected(hash, 'general')}"
+  element-key="{{hash}}">
+    <i class="fa fa-caret-right" aria-hidden="true" ng-click="showIf=true; $event.stopPropagation();" ng-show="!showIf"></i>
+    <i class="fa fa-caret-down" aria-hidden="true" ng-click="showIf=false; $event.stopPropagation();" ng-show="showIf"></i> 
+    if: 
+</span>  
+<ul ng-switch="conditionKey" style="display: inline-block; margin-left: 5px">
+  <li ng-switch-when="exists">exists: <input type="text" class="field-name" ng-model="conditionValue"/></li>
+  <ul ng-switch-when="and" rule-bool rule-master="ruleMaster" rule-value="conditionValue" bool-type="conditionKey"></ul>
+  <ul ng-switch-when="or" rule-bool rule-master="ruleMaster" rule-value="conditionValue" bool-type="conditionKey"></ul>
+</ul>
+<ul ng-if="hasTrue()" class="rule-shift" class="rule-shift" ng-show="showIf" ng-click="setSelected($event, 'true')">
+  <span ng-class="{selected: isSelected(hash, 'true')}">
+    <i class="fa fa-caret-right" aria-hidden="true" ng-click="showTrue = true; $event.stopPropagation();" ng-show="!showTrue"></i>
+    <i class="fa fa-caret-down" aria-hidden="true" ng-click="showTrue = false; $event.stopPropagation();" ng-show="showTrue"></i>
+    true:
+  </span>
+  <ul rule-value-array rule-master="ruleMaster" ng-show="showTrue" rule-value="ruleValue.true" class="rule-shift"></ul>
+</ul>
+<ul ng-if="hasFalse()" class="rule-shift" class="rule-shift" ng-show="showIf" ng-click="setSelected($event, 'false')">
+  <span ng-class="{selected: isSelected(hash, 'false')}">
+    <i class="fa fa-caret-right" aria-hidden="true" ng-click="showFalse=true; $event.stopPropagation();" ng-show="!showFalse"></i>
+    <i class="fa fa-caret-down" aria-hidden="true" ng-click="showFalse=false; $event.stopPropagation();" ng-show="showFalse"></i> 
+    false:
+  </span>
+  <ul rule-value-array rule-master="ruleMaster" ng-show="showFalse" rule-value="ruleValue.false" class="rule-shift"></ul>
+</ul>

@@ -14,6 +14,19 @@ export const legacySettings = {
   // logging
   log_file: 'logging.dest',
 
+  //authentification
+  authentification_host: 'authentification.host',
+  authentification_port: 'authentification.auth.port',
+  authentification_database: 'authentification.database',
+  authentification_user: 'authentification.user',
+  authentification_password: 'authentification.password',
+  
+  //pcapexport
+  pcap_export_host: 'kibana.pcapexportHost',
+  pcap_export_port: 'kibana.pcapexportPort',
+  pcap_export_path: 'kibana.pcapexportPath',
+  inventory_path:   'kibana.inventoryPath',
+  
   // kibana
   kibana_index: 'kibana.index',
   default_app_id: 'kibana.defaultAppId',

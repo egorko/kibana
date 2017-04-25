@@ -27,7 +27,7 @@ require('ui/index_patterns/route_setup/load_default')({
 
 uiModules
 .get('apps/management')
-.directive('kbnManagementApp', function (Private, $route, $location, timefilter, buildNum, buildSha) {
+.directive('kbnManagementApp', function (Private, $route, $location, timefilter, buildNum, buildSha, kbnCredentials) {
   return {
     restrict: 'E',
     template: appTemplate,

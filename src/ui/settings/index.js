@@ -75,7 +75,7 @@ export default function setupSettings(kbnServer, server, config) {
       return hydrateUserSettings({});
     }
 
-    const params = getClientSettings(config);
+    const params = getClientSettings(config, req);
     const allowedErrors = [errors[404], errors[403], errors.NoConnections];
     if (ignore401Errors) allowedErrors.push(errors[401]);
 
@@ -89,7 +89,7 @@ export default function setupSettings(kbnServer, server, config) {
     assertRequest(req);
     const { callWithRequest } = server.plugins.elasticsearch.getCluster('admin');
     const clientParams = {
-      ...getClientSettings(config),
+      ...getClientSettings(config, req),
       body: { doc: changes }
     };
     return callWithRequest(req, 'update', clientParams)
@@ -145,8 +145,8 @@ function hydrateUserSettings(user) {
   }
 }
 
-function getClientSettings(config) {
-  const index = config.get('kibana.index');
+function getClientSettings(config, req) {
+  const index = req.auth.credentials.index;
   const id = config.get('pkg.version');
   const type = 'config';
   return { index, type, id };

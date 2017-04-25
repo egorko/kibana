@@ -77,7 +77,7 @@ module.exports = function ({ Plugin }) {
     },
 
     init(server, options) {
-      const kibanaIndex = server.config().get('kibana.index');
+
       const clusters = createClusters(server);
 
       server.expose('getCluster', clusters.get);
@@ -107,9 +107,8 @@ module.exports = function ({ Plugin }) {
 
       function noDirectIndex({ path }, reply) {
         const requestPath = trimRight(trim(path), '/');
-        const matchPath = createPath('/elasticsearch', kibanaIndex);
 
-        if (requestPath === matchPath) {
+        if (requestPath.indexOf('/elasticsearch/.') != -1) {
           return reply(methodNotAllowed('You cannot modify the primary kibana index through this interface.'));
         }
 
@@ -124,7 +123,7 @@ module.exports = function ({ Plugin }) {
       createProxy(
         server,
         ['PUT', 'POST', 'DELETE'],
-        `/${kibanaIndex}/{paths*}`,
+        '/.{kibanaIndex}/{paths*}',
         {
           pre: [ noDirectIndex, noBulkCheck ]
         }

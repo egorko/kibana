@@ -86,6 +86,7 @@ export default function ($compile) {
     // render the current template to the $element if possible
     // function is idempotent
     _render() {
+
       const { $scope, $element, rendered, currentKey } = this;
       const templateToRender = currentKey && this.templates[currentKey];
 
@@ -109,7 +110,6 @@ export default function ($compile) {
       const $childScope = $scope.$new();
       const $el = $element.find('#template_wrapper').html(templateToRender).contents();
       $compile($el)($childScope);
-
       this.rendered = { $childScope, $el, key: currentKey };
     }
   };

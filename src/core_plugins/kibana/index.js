@@ -5,6 +5,8 @@ import ingest from './server/routes/api/ingest';
 import search from './server/routes/api/search';
 import settings from './server/routes/api/settings';
 import scripts from './server/routes/api/scripts';
+import pcaps from './server/routes/api/proxy/pcap_export';
+import inventory from './server/routes/api/proxy/inventory';
 import * as systemApi from './server/lib/system_api';
 
 const mkdirp = Promise.promisify(mkdirpNode);
@@ -17,7 +19,11 @@ module.exports = function (kibana) {
       return Joi.object({
         enabled: Joi.boolean().default(true),
         defaultAppId: Joi.string().default('discover'),
-        index: Joi.string().default('.kibana')
+        index: Joi.string().default('.kibana'),
+        pcapexportHost: Joi.string().default('localhost'),
+        pcapexportPort: Joi.number().default(8093),
+        pcapexportPath: Joi.string().default('/pcapexport'),
+        inventoryPath: Joi.string().default('/inventory')        
       }).default();
     },
 
@@ -84,6 +90,13 @@ module.exports = function (kibana) {
           description: 'compose visualizations for much win',
           icon: 'plugins/kibana/assets/dashboard.svg',
         }, {
+          id: 'kibana:callflow',
+          title: 'Callflow',
+          order: -1000,
+          url: `${kbnBaseUrl}#/callflow`,
+          description: 'compose visualizations for much win',
+          icon: 'plugins/kibana/assets/callflow.png',
+        },  {
           id: 'kibana:dev_tools',
           title: 'Dev Tools',
           order: 9001,
@@ -128,6 +141,9 @@ module.exports = function (kibana) {
       search(server);
       settings(server);
       scripts(server);
+      //proxy
+      pcaps(server);
+      inventory(server);
 
       server.expose('systemApi', systemApi);
     }

@@ -1,0 +1,52 @@
+<ul 
+  ng-repeat="value in ruleValue" 
+  ng-init="key = getKey(value); hash = value.$$hashKey" 
+  ng-switch="key"
+  ng-click="setCurrent($event, hash)"
+  style="display:table">
+  
+  <li 
+    ng-switch-when="const"
+    ng-style=""
+    class="element" 
+    element-key="{{hash}}">
+      <span class="operator" ng-class="{selected: isSelected(hash)}">const: </span>
+      <input class="const-value" type="text" ng-model="value[key]"/>
+  </li>
+  <li 
+    ng-switch-when="field"
+    class="element" 
+    element-key="{{hash}}">
+      <span class="operator" ng-class="{selected: isSelected(hash)}">field: </span>
+      <input ng-style="getSize(value[key])" class="field-name" type="text" ng-model="value[key]"/>
+  </li>
+  <ul 
+    ng-switch-when="arrayField" 
+    rule-array-field 
+    rule-master="ruleMaster" 
+    rule-value="value[key]"
+    class="element" 
+    element-key="{{hash}}">
+  </ul>
+  <li ng-switch-when="datetime" class="element" element-key="{{hash}}">
+    <span class="operator" ng-class="{selected: isSelected(hash)}">datetime: </span>
+    <select ng-model="value[key]" ng-options="time for time in ['time', 'date', 'datetime']"></select>
+  </li>
+  <ul 
+    ng-switch-when="if" 
+    rule-if 
+    show-this="true" 
+    rule-master="ruleMaster" 
+    rule-value="value[key]"
+    class="element" 
+    element-key="hash">
+  </ul>
+  <ul 
+    ng-switch-when="switch" 
+    rule-switch 
+    rule-master="ruleMaster" 
+    rule-value="value[key]"
+    class="element" 
+    element-key="{{hash}}">
+  </ul>
+</ul>

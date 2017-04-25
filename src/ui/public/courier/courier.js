@@ -121,6 +121,10 @@ uiModules.get('kibana/courier')
       }
     };
 
+    self.fetchThis = function(source) {
+      return fetch.search(source, searchStrategy);
+    }
+
     /**
      * Abort all pending requests
      * @return {[type]} [description]

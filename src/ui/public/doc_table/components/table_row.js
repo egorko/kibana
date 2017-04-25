@@ -7,6 +7,7 @@ import 'ui/filters/trust_as_html';
 import 'ui/filters/short_dots';
 import noWhiteSpace from 'ui/utils/no_white_space';
 import openRowHtml from 'ui/doc_table/components/table_row/open.html';
+import checkRowHtml from 'ui/doc_table/components/table_row/check.html';
 import detailsHtml from 'ui/doc_table/components/table_row/details.html';
 import uiModules from 'ui/modules';
 let module = uiModules.get('app/discover');
@@ -89,6 +90,7 @@ module.directive('kbnTableRow', function ($compile) {
 
         // We just create a string here because its faster.
         let newHtmls = [
+          checkRowHtml,
           openRowHtml
         ];
 
@@ -112,7 +114,7 @@ module.directive('kbnTableRow', function ($compile) {
           let $cell = $cells.eq(i);
           if ($cell.data('discover:html') === html) return;
 
-          let reuse = _.find($cells.slice(i + 1), function (cell) {
+          let reuse = _.find($cells.slice(i + 2), function (cell) {
             return $.data(cell, 'discover:html') === html;
           });
 
@@ -128,7 +130,7 @@ module.directive('kbnTableRow', function ($compile) {
           // rebuild cells since we modified the children
           $cells = $el.children();
 
-          if (i === 0 && !reuse) {
+          if ((i === 0 || i === 1) && !reuse) {
             $toggleScope = $scope.$new();
             $compile($target)($toggleScope);
           }

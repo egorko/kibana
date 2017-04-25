@@ -1,0 +1,10 @@
+<span class="operator">
+  <i class="fa fa-caret-right" aria-hidden="true" ng-click="showBool=true" ng-show="!showBool"></i>
+  <i class="fa fa-caret-down" aria-hidden="true" ng-click="showBool=false" ng-show="showBool"></i> 
+  {{boolType}}:
+</span>
+<ul ng-repeat="condition in ruleValue" ng-init="key = getKey(condition)" ng-switch="key" class="rule-shift" ng-show="showBool">
+  <li ng-switch-when="exists">exists: <input class="field-name" type="text" ng-model="condition[key]"/></li>
+  <ul ng-switch-when="and" rule-bool rule-master="ruleMaster" rule-value="condition[key]" bool-type="key"></ul>
+  <ul ng-switch-when="or" rule-bool rule-master="ruleMaster" rule-value="condition[key]" bool-type="key"></ul>
+</ul>

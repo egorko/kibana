@@ -22,6 +22,7 @@ module.exports = function (chrome, internals) {
     .value('kbnVersion', internals.version)
     .value('buildNum', internals.buildNum)
     .value('buildSha', internals.buildSha)
+    .value('kbnCredentials', internals.kbnCredentials)
     .value('serverName', internals.serverName)
     .value('uiSettings', internals.uiSettings)
     .value('sessionId', Date.now())

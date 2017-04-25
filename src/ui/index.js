@@ -49,7 +49,6 @@ export default async (kbnServer, server, config) => {
       const id = req.params.id;
       const app = uiExports.apps.byId[id];
       if (!app) return reply(Boom.notFound('Unknown app ' + id));
-
       try {
         if (kbnServer.status.isGreen()) {
           await reply.renderApp(app);
@@ -65,6 +64,8 @@ export default async (kbnServer, server, config) => {
   async function getKibanaPayload({ app, request, includeUserProvidedConfig }) {
     const uiSettings = server.uiSettings();
 
+    uiExports.defaultInjectedVars.kbnIndex = request.auth.credentials.index;
+
     return {
       app: app,
       nav: uiExports.navLinks.inOrder,
@@ -72,6 +73,7 @@ export default async (kbnServer, server, config) => {
       buildNum: config.get('pkg.buildNum'),
       buildSha: config.get('pkg.buildSha'),
       basePath: config.get('server.basePath'),
+      kbnCredentials: request.auth.credentials,
       serverName: config.get('server.name'),
       devMode: config.get('env.dev'),
       uiSettings: await props({

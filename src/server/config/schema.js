@@ -30,6 +30,13 @@ module.exports = () => Joi.object({
     exclusive: Joi.boolean().default(false)
   }).default(),
 
+  authentification: Joi.object({
+    host: Joi.string().hostname().default('localhost'),
+    port: Joi.number().default(5432),
+    database: Joi.string(),
+    user: Joi.string(),
+    password: Joi.string()
+  }).default(),
 
   server: Joi.object({
     uuid: Joi.string().guid().default(),

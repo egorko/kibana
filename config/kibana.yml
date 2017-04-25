@@ -32,6 +32,13 @@
 # The default application to load.
 #kibana.defaultAppId: "discover"
 
+# Connection parameters to authentification database
+authentification.host: 192.168.0.221
+authentification.port: 5432
+authentification.database: grafana
+authentification.user: grafana
+authentification.password: grafana
+
 # If your Elasticsearch is protected with basic authentication, these settings provide
 # the username and password that the Kibana server uses to perform maintenance on the Kibana
 # index at startup. Your Kibana users still need to authenticate with Elasticsearch, which

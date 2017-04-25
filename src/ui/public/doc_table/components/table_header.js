@@ -12,6 +12,8 @@ module.directive('kbnTableHeader', function (shortDotsFilter) {
       columns: '=',
       sorting: '=',
       indexPattern: '=',
+      rows: '=',
+      filterArray: '='
     },
     template: headerHtml,
     controller: function ($scope) {
@@ -25,6 +27,35 @@ module.directive('kbnTableHeader', function (shortDotsFilter) {
       $scope.tooltip = function (column) {
         if (!sortableField(column)) return '';
         return 'Sort by ' + shortDotsFilter(column);
+      };
+      
+      let iterateObj = function(obj, fieldMap) {
+        let bufObj = obj;
+        if (fieldMap.indexOf('.') == -1) return bufObj[fieldMap];
+        let fieldArray = fieldMap.split('.');
+        fieldArray.forEach(function(field) {
+          if( bufObj[field] ) {
+            bufObj = bufObj[field];
+          }
+        });
+        return bufObj;
+      }
+
+      $scope.multiFilter = function (field, operation, boolOp) {
+      $scope.filterArray(
+        field, 
+        _.uniq(
+          _.map(
+            _.filter($scope.rows, function(row) {
+              return row.selected;
+            })
+            ,function(row){
+              return iterateObj(row._source, field);
+            }
+          )
+        ), 
+        operation, 
+        boolOp);
       };
 
       $scope.canRemove = function (name) {
@@ -74,6 +105,14 @@ module.directive('kbnTableHeader', function (shortDotsFilter) {
         $scope.sorting[0] = column;
         $scope.sorting[1] = direction;
       };
+      
+      $scope.asAllSelected = false;
+      
+      $scope.selectAll = function(){
+        _.forEach($scope.rows, function(row){
+          row.selected = $scope.isAllSelected;
+        })
+      }
     }
   };
 });

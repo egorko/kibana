@@ -6,6 +6,7 @@ import 'ui/directives/truncated';
 import 'ui/directives/infinite_scroll';
 import 'ui/doc_table/components/table_header';
 import 'ui/doc_table/components/table_row';
+import 'ui/doc_table/components/table_menu';
 import uiModules from 'ui/modules';
 
 
@@ -23,6 +24,7 @@ uiModules.get('kibana')
       searchSource: '=?',
       infiniteScroll: '=?',
       filter: '=?',
+      filterArray: '=?'
     },
     link: function ($scope) {
       let notify = new Notifier();

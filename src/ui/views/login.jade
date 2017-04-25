@@ -1,0 +1,80 @@
+extends ./chrome.jade
+  
+title Login page
+block head
+  link(
+    rel='stylesheet' href='#{kibanaPayload.basePath}/ui/font-awesome/css/font-awesome.min.css'
+  )
+   
+  style.
+    .login-field {
+      width:  600px;
+      background-color: #3caed2;
+      padding: 10px;
+      height: 106px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 200px;
+    }
+    .login-field img {
+      float: left;
+      margin: -60px -50px -60px -82px;
+    }
+    input.button {
+      border-radius: 5px;
+      background-color: #266c83;
+      border-color: #266c83;
+      color: #F0F8FF;
+      width: 318px;
+      display: block;
+      margin-left: 150px;
+      height: 28px;
+      font-size: medium;
+      cursor: pointer;
+    }
+    .input-field {
+      border-style: solid;
+      border-width: 1px;
+      border-radius: 5px;
+      background-color: white;
+      padding: 2px 8px 2px 8px;
+      margin: 0 10px 10px 150px;
+      width: 300px;
+    }
+    .error-field {
+      border-color: red;
+    }
+    .input-field input {
+      font-family: Open Sans,Helvetica,Arial,sans-serif;
+      font-size: medium;
+      border-style: none;
+      margin-left: 5px;
+      width: 270px;
+    }
+    .input-field i {
+      width: 16px;
+    }
+    div.message {
+      padding: 10px;
+    }
+    span.message {
+      color: red;
+      font-size: small;
+    }
+block content
+ 
+  div.control
+   form(method='get', action='/login')
+     div.login-field
+       img(src='#{kibanaPayload.basePath}/ui/favicons/mstile-150x150.png')
+       div.input-field(class="#{missingUsername}")
+         i.fa.fa-user(aria-hidden='true') 
+         input(type='text', name='username', placeholder='Username', value='#{username}')
+       
+       div.input-field(class="#{missingPassword}")
+         i.fa.fa-lock(aria-hidden='true')
+         input(type='password', name='password', placeholder='Password', value='#{password}')
+       input.button(type='submit', value='LOG IN')
+       - if (message)
+         div.message
+           span.message #{message}

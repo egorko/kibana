@@ -1,0 +1,95 @@
+<div  ng-controller="callflow" ng-init="init()">
+<style type="text/css">
+  i.cap       {color: {{opts.protocolColors.cap}};}
+  i.map       {color: {{opts.protocolColors.map}};}
+  i.aiu       {color: {{opts.protocolColors.aiu}};}
+  i.isup      {color: {{opts.protocolColors.isup}};}
+  i.sip       {color: {{opts.protocolColors.sip}};}
+  i.diameter  {color: {{opts.protocolColors.diameter}};}
+</style>
+<kbn-callflow-app section="callflow" setting-id="opts.settings.id">
+<callflow-body>
+  <navbar>
+    <span class="search-field-name">SubsIDs: </span>
+    <form role="form" class="fill inline-form ng-pristine ng-valid" ng-submit="drawDiagram(subsIDs)" name="callflowSearch">
+      <div class="typeahead ng-isolate-scope" kbn-typeahead="discover">
+        <div class="input-group" ng-class="discoverSearch.$invalid ? 'has-error' : ''">
+          <input 
+            input-focus="" 
+            kbn-typeahead-input="" 
+            ng-model="subsIDs" 
+            placeholder="Search..." 
+            aria-label="Search input" 
+            type="text" 
+            class="form-control ng-pristine ng-valid ng-isolate-scope ng-touched" 
+            autocomplete="off" style=""
+          />
+          <button type="submit" ng-disabled="discoverSearch.$invalid" aria-label="Search">
+            <span aria-hidden="true" class="fa fa-search"></span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </navbar>
+  <div class="col-md-2 sidebar-container collapsible-sidebar">
+    <div class="sidebar-list">
+      <div ng-show="indexPatternList.length > 1">
+        <div class="index-pattern" ng-click="switchShowIndexPatternSelection()">
+          <div css-truncate title="{{indexPattern.id}}">{{indexPattern.id}}</div>
+          <i ng-hide="showIndexPatternSelection" class="fa fa-caret-down"></i>
+          <i ng-show="showIndexPatternSelection" class="fa fa-caret-up"></i>
+        </div>
+        <div ng-show="showIndexPatternSelection">
+          <ul class="list-unstyled sidebar-item index-pattern-selection">
+            <li css-truncate class="sidebar-item-title" title="{{id}}" ng-repeat="id in indexPatternList | orderBy" ng-show="indexPattern.id != id" ng-click="setIndexPattern(id)">{{id}}</li>
+          </ul>
+          <div ng-click="switchShowIndexPatternSelection()" class="discover-field-details-close">
+            <i class="fa fa-chevron-up"></i>
+          </div>
+        </div>
+      </div>
+      <div ng-hide="indexPatternList.length > 1">
+        <div class="index-pattern">
+          <div css-truncate>{{ indexPattern.id }}</div>
+        </div>
+      </div>
+      <div class="sidebar-list-header">
+        <h5>Protocols List</h5>
+      </div>
+      <ul class="list-unstyled discover-selected-fields" >
+        <li class="sidebar-item" ng-repeat="protocol in protocolList">
+          <div class="sidebar-item-title" ng-click="switchProtocol(protocol)">
+            <i class="fa fa-circle {{protocol.enabled ? protocol.name : ''}}" aria-hidden="true"></i><span class="{{protocol.name}}">{{protocol.name}}</span>
+          </div>
+        </li>
+      </ul>
+      <div class="sidebar-list-header">
+        <h5>Message details</h5>
+      </div>
+      <ul class="list-unstyled">
+        <li class="format-switcher" ng-click="switchFormat()">
+          <span class="format-name" ng-class="getFormatClass('es')">es</span><span class="format-name" ng-class="getFormatClass('tshark')">tshark</span>
+        </li>
+        <li class="detailed-message-header" ng-show="showExportButton()">
+          <span tooltip="Export pcap file(s) of selected document(s)" tooltip-placement="right" tooltip-popup-delay="400" tooltip-append-to-body="1" text="Export pcap" placement="bottom" append-to-body="1" class="ng-scope">
+            <button ng-click="exportPcap()" aria-label="Export pcap" class="ng-scope">
+              <i aria-hidden="true" class="fa fa-floppy-o"></i>
+            </button>
+          </span>
+        </li>
+        <li class="detailed-message-header">id: {{grutObject.id}}</li>
+        <li class="detailed-message-header">time: {{grutObject.datetime}}</li>
+        <ul class="detailed-message-group" ng-if="format == 'es'" grut ng-click="showThis = !showThis" root="true" grut-object="grutObject.raw"></ul>
+        <ul class="detailed-message-group" ng-if="format == 'tshark'" grut ng-click="showThis = !showThis" root="true" grut-object="grutObject.tshark"></ul>
+      </ul>
+    </div>
+  </div>
+  <div class="discover-wrapper col-md-10">  
+    <h5 class="callflow-status">{{diagramStatus}}</h5>  
+    <div class="callflow-main">
+      <sequence-diagram class="diagram-body" diagram="diagramObject" actions="actions"></sequence-diagram>
+    </div>
+  </div>
+</callflow-body>
+</kbn-callflow-app>
+</div>

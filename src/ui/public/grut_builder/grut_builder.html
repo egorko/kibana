@@ -1,0 +1,18 @@
+<ul 
+  class="detailed-message-group"
+  ng-repeat="obj in objects"
+  >
+  <span class="group-text" ng-click="showChild = !showChild">
+    <i class="fa fa-caret-right" aria-hidden="true" ng-show="!showChild"></i>
+    <i class="fa fa-caret-down"  aria-hidden="true" ng-show="showChild"></i>
+    {{obj.key}}
+  </span>
+  <ul grut
+    class="detailed-message-group"
+    ng-if="showChild"
+    grut-object="obj.value">
+  </ul>
+</ul>
+<li class="detailed-message-item" ng-repeat="key in keys">
+  <span>{{key}}:</span>&nbsp;{{getValue(key)}}
+</li>

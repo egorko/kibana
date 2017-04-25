@@ -98,6 +98,16 @@ uiModules
           const index = $scope.savedObj.searchSource.get('index').id;
           filterManager.add(field, value, operator, index);
         };
+        $scope.filterArray = function (field, valueArray, operation, boolOp) {
+          if(valueArray.length == 0) { return };
+          let index = $scope.savedObj.searchSource.get('index').id;
+          filterManager.addArray(
+            field, 
+            valueArray, 
+            operation, 
+            boolOp, 
+            index);
+        };
       })
       .catch(function (e) {
         $scope.error = e.message;

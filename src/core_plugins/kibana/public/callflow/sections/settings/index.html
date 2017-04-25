@@ -1,0 +1,64 @@
+<div  ng-controller="callflowSettingsCtl" ng-init="init()">
+<kbn-top-nav name="callflow" config="topNavMenu"></kbn-top-nav>
+<kbn-callflow-app section="settings" setting-id="opts.settings.id">
+<callflow-body>
+<div class="discover-wrapper col-md-10">
+<h2>{{settings.title}}</h2>
+<div>
+  <span>font-family: </span>
+  <select ng-model="opts.font['font-family']" ng-change="changeSettings()">
+    <option ng-repeat="font in fontList" value="{{font.value}}" ng-style="{'font-family': font.name}">{{font.name}}</option>
+  </select>
+  <select ng-model="opts.font['font-size']"  ng-change="changeSettings()" ng-options="fontSize for fontSize in fontSizes">
+  </select>
+</div>
+<div class="col-md-5">
+<ul>
+  <li ng-repeat="protocol in protocolList" style="width: 50px; list-style-type: none;">
+    <div class="color-selector">
+      <input ng-change="changeSettings()" type="color" ng-model="opts.protocolColors[protocol]"/><span>{{protocol}}</span>
+    </div>
+  </li>
+</ul>
+<sequence-diagram class="diagram-body" diagram="diagramObject" diagram-id="setting-diagram{{diagramID}}"></sequence-diagram>
+</div>
+<textarea  class="rule-settings col-md-5" ng-model="opts.settings.ruleJSON"></textarea >
+<!-- 
+{{ruleMaster.current}}
+<ul rule-value-array rule-master="ruleMaster" rule-value = "opts.rule.rules"></ul>
+ -->
+</div>
+</callflow-body>
+<!--
+<callflow-buttons>
+  <kbn-tooltip text="New Settings" placement="bottom" append-to-body="1">
+    <button
+      ng-click="newQuery()"
+      aria-label="New Settings">
+      <i aria-hidden="true" class="fa fa-file-new-o"></i>
+    </button>
+  </kbn-tooltip>
+  <kbn-tooltip text="Save Settings" placement="bottom" append-to-body="1">
+    <button
+      ng-click="configTemplate.toggle('save');"
+      ng-class="{active: configTemplate.is('save')}"
+      aria-haspopup="true"
+      aria-expanded="{{ configTemplate.is('save') }}"
+      aria-label="Save Settings">
+      <i aria-hidden="true" class="fa fa-save"></i>
+    </button>
+  </kbn-tooltip>
+  <kbn-tooltip text="Load Saved Settings" placement="bottom" append-to-body="1">
+    <button
+      aria-haspopup="true"
+      aria-expanded="{{ configTemplate.is('load') }}"
+      ng-click="configTemplate.toggle('load');"
+      ng-class="{active: configTemplate.is('load')}"
+      aria-label="Load Saved Settings">
+      <i aria-hidden="true" class="fa fa-folder-open-o"></i>
+    </button>
+  </kbn-tooltip>
+</callflow-buttons>
+-->
+</kbn-callflow-app>
+</div>
